@@ -133,8 +133,8 @@ class Board {
 
     }
     makeMove(index) {
-        if (!this.#isPlayable(index)) return MOVE_STATE.INVALID;
         this.#currentIndex = index;
+        if (!this.#isPlayable(index)) return MOVE_STATE.INVALID;
         if (this.#isSecondMove(index)) {
             const lastValue = this.#state[this.#lastIndex].value;
             const newValue = this.#state[index].value;
@@ -142,6 +142,7 @@ class Board {
             if (lastValue === newValue) {
                 this.#state[this.#lastIndex].playable = false;
                 this.#state[index].playable = false;
+                this.#lastIndex = null;
                 return MOVE_STATE.CORRECT;
             }
             // reset last index
@@ -268,8 +269,7 @@ class Game {
         this.#player = new Player(this.#board);
     }
     #init() {
-        DOMUtils.update(UI_ELEMENTS.GAME_STATS_SIZE, this.#board.getSize());
-        DOMUtils.update(UI_ELEMENTS.GAME_STATS_WRONG_TRIES_LEFT, this.#board.getWrongTriesLeft());
+        this.#updateStats();
         this.#timeCounter = setInterval(() => { DOMUtils.update(UI_ELEMENTS.GAME_STATS_TIME, DOMUtils.formatTime(this.#board.getTime())) }, 1000);
         if (typeof this.#board.getAllowedTime() === "number") {
             this.#remaningTimeCounter = setInterval(() => {
@@ -298,14 +298,19 @@ class Game {
             board.appendChild(tile);
         });
     }
-
-    #redraw() {
-        const currentIndex = this.#board.getCurrentIndex();
-        const lastIndex = this.#board.getLastIndex();
+    #updateStats() {
         DOMUtils.update(UI_ELEMENTS.GAME_STATS_WRONG_TRIES, this.#player.getWrongTries());
         DOMUtils.update(UI_ELEMENTS.GAME_STATS_STREAK, this.#player.getStreak());
         DOMUtils.update(UI_ELEMENTS.GAME_STATS_TOTAL_POINTS, this.#player.getPoints());
         DOMUtils.update(UI_ELEMENTS.GAME_STATS_WRONG_TRIES_LEFT, this.#board.getWrongTriesLeft());
+        DOMUtils.update(UI_ELEMENTS.GAME_STATS_SIZE, this.#board.getSize());
+        DOMUtils.update(UI_ELEMENTS.GAME_STATS_WRONG_TRIES_LEFT, this.#board.getWrongTriesLeft());
+    }
+
+    #redraw() {
+        this.#updateStats();
+        const currentIndex = this.#board.getCurrentIndex();
+        const lastIndex = this.#board.getLastIndex();
         const currentIndexSelector = `#tile_${currentIndex}`;
         const value = this.#board.getTileValue(currentIndex);
         DOMUtils.update(currentIndexSelector, value);
