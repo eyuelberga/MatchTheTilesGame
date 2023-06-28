@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="meta/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="meta/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="meta/favicon-16x16.png">
+  <link rel="manifest" href="meta/site.webmanifest">
+  <link rel="mask-icon" href="meta/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>Match The Tiles</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/game.css" />
+</head>
+
+<body>
+  <header>
+    <nav class="navbar-main" id="mainNavbar">
+      <a href="index.html">Home</a>
+      <a href="scoreboard.html">Score Board</a>
+      <a href="javascript:void(0);" class="icon" onclick="toggleMainNavbar()">
+        <i>=</i>
+      </a>
+    </nav>
+  </header>
+  <main role="main">
+
+    <form id="gameover-form" style="display: none;">
+      <section class="form-container">
+        <div class="gameover-message">
+          <h2>Game Over</h2>
+          <h1 id="gameover-message">The game has ended</h1>
+        </div>
+        <section id="score-registration" style="display: none;">
+          <label for="size">Please enter name to save your score:</label>
+          <input required pattern="^[a-zA-Z]{3}$" title="Only 3 letters are allowed" type="text" name="name"
+            placeholder="Enter your name">
+          <input type="submit" value="Save">
+        </section>
+        <input id="new-game-button" type="button" value="New Game">
+      </section>
+      <div class="game-results-container">
+        <section class="game-stats-container">
+          <p>Time: <input name="time" class="readonly-input" readonly id="end-game-stat-time" value="00:00:00"></p>
+          <p>Wrong Tries: <input name="wrongTries" class="readonly-input" readonly id="end-game-stat-wrong-tries"
+              value="0">
+          </p>
+          <p>Streaks: <input name="streaks" class="readonly-input" readonly id="end-game-stat-streaks" value="0"></p>
+          <p>Total Points: <input name="totalPoints" class="readonly-input" readonly id="end-game-stat-total-points"
+              value="0"></p>
+        </section>
+        <section class="game-stats-container">
+          <p>Game Type: <input name="gameType" class="readonly-input" readonly id="end-game-config-type" value="0">
+          </p>
+          <p>Tiles: <input name="size" class="readonly-input" readonly id="end-game-config-size" value="0"></p>
+          <p>Allowed Tries: <input name="allowedTries" class="readonly-input" readonly id="end-game-config-tries"
+              value="0"></p>
+          <p>Allowed Time: <input name="allowedTime" class="readonly-input" readonly id="end-game-config-time"
+              value="0">
+          </p>
+        </section>
+      </div>
+    </form>
+
+    <form id="game-start-form" class="form-container">
+      <label for="type">Choose Game Type</label>
+      <select name="type">
+        <option value="classic">Classic</option>
+        <option value="one-minute">1 Minute Game</option>
+        <option value="custom">Custom</option>
+      </select>
+      <div id="custom-options" style="display: none;">
+        <label for="size">Number of Tiles</label>
+        <input class="required" min="2" type="number" name="size" placeholder="Choose number of Tiles">
+
+        <label for="time">Allowed Time</label>
+        <input min="0" class="required" type="number" name="time" placeholder="Enter value in seconds">
+
+        <label for="tries">Max Tries</label>
+        <input min="0" class="required" type="number" name="tries" placeholder="Enter allowed wrong tries">
+      </div>
+      <input type="submit" value="Start Game">
+    </form>
+    <div class="game-board" style="display: none;">
+      <div id="tiles-board" class="tiles-container">
+
+      </div>
+      <div class="game-control-container">
+        <section class="game-stats-container">
+          <p>Tiles: <span id="stat-size">0</span></p>
+          <p>Time:<span id="stat-time">00:00:00</span></p>
+          <p>Remaning Time: <span id="stat-time-remaning">Infinity</span></p>
+          <p>Wrong Tries: <span id="stat-wrong-tries"> 0</span> </p>
+          <p>Wrong Tries Left: <span id="stat-wrong-tries-left">0</span></p>
+          <p>Streaks: <span id="stat-streaks">0</span> </p>
+          <p>Total Points: <span id="stat-total-points">0</span> </p>
+        </section>
+
+        <div class="button-group">
+          <button id="restart-button">Restart</button>
+          <button id="end-button">End Game</button>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </main>
+  <footer>
+    <p>Source-code avaliable on <a target="_blank" href="https://github.com/eyuelberga/MatchTheTilesGame">Github</a>.
+    </p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/game.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "match-the-tiles-game",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.18.2"
+  }
+}
