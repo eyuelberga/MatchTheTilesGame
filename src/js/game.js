@@ -30,7 +30,7 @@ class DOMUtils {
       if (elem.tagName === "INPUT") {
         elem.setAttribute("value", value);
       } else {
-        elem.innerHTML = value;
+        elem.textContent = value;
       }
       return true;
     }
@@ -292,17 +292,19 @@ class Game {
 
   #generateBoard() {
     const board = DOMUtils.get(UI_ELEMENTS.TILES_BOARD);
-    board.replaceChildren();
+    const fragment = document.createDocumentFragment();
     this.#board.getState().forEach((_, index) => {
       const tile = document.createElement("div");
       tile.setAttribute("class", "tile tile-hidden");
       tile.setAttribute("id", `tile_${index}`);
       tile.appendChild(document.createTextNode("x"));
-      tile.addEventListener("click", () => {
-        this.#player.move(index);
-        this.#redraw();
-      });
-      board.appendChild(tile);
+      fragment.appendChild(tile);
+    });
+    board.replaceChildren(fragment);
+    board.addEventListener("click", (event) => {
+      const index = parseInt(event.target.id.replace(/^tile_/, ""));
+      this.#player.move(index);
+      this.#redraw();
     });
   }
   #updateStats() {
